@@ -1,5 +1,3 @@
-import { Leaf, Vegan, BadgeCheck } from "lucide-react";
-
 const features = [
   {
     icon: "🌱",
