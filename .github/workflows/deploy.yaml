@@ -13,39 +13,39 @@ jobs:
       VPS_USER: ${{ secrets.VPS_USER }}
       VPS_PORT: ${{ secrets.VPS_PORT }}
       REMOTE_DIR: /var/www/bhakti-organic
-      # PAYLOAD_SECRET: ${{ secrets.PAYLOAD_SECRET }}
-      # PAYLOAD_PUBLIC_SERVER_URL: ${{ secrets.PAYLOAD_PUBLIC_SERVER_URL }}
-      # DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      # DATABASE_AUTH_TOKEN: ${{ secrets.DATABASE_AUTH_TOKEN }}
-      
+
     steps:
+      # ─────────────────────────────────────────────
+      # 1️⃣ Checkout source
+      # ─────────────────────────────────────────────
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      # ─────────────────────────────────────────────
+      # 2️⃣ Setup Node with correct lockfile path
+      # ─────────────────────────────────────────────
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
-      - name: Install & Build
+      # ─────────────────────────────────────────────
+      # 3️⃣ Install dependencies & build (frontend)
+      # ─────────────────────────────────────────────
+      - name: Install & Build Next.js
+        working-directory: frontend
         env:
           NEXT_TELEMETRY_DISABLED: 1
         run: |
-          echo "=== Listing repo contents ==="
-          ls -al
-
-          echo "=== Removing old lockfile and reinstalling ==="
-          rm -f package-lock.json
-          npm install
-
-          echo "=== Running clean CI install from fresh lockfile ==="
           npm ci
-
-          echo "=== Building Next.js app ==="
           npm run build
 
-      - name: Prepare SSH key and known_hosts
+      # ─────────────────────────────────────────────
+      # 4️⃣ Prepare SSH
+      # ─────────────────────────────────────────────
+      - name: Prepare SSH key
         env:
           SSH_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
@@ -54,44 +54,39 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${VPS_PORT}" -H "${VPS_HOST}" >> ~/.ssh/known_hosts
 
+      # ─────────────────────────────────────────────
+      # 5️⃣ Upload build to VPS (frontend only)
+      # ─────────────────────────────────────────────
       - name: Upload app to VPS
         run: |
           SSH_OPTS="-i ~/.ssh/id_ed25519 -p ${VPS_PORT} -o StrictHostKeyChecking=yes"
 
-          # Ensure remote dir exists
           ssh $SSH_OPTS ${VPS_USER}@${VPS_HOST} "mkdir -p ${REMOTE_DIR}"
 
-          # Sync only necessary files (source + .next build)
           rsync -avz --delete \
             --exclude '.git' \
             --exclude '.github' \
             --exclude 'node_modules' \
-            --exclude 'tests' \
             -e "ssh $SSH_OPTS" \
-            ./ \
+            ./frontend/ \
             ${VPS_USER}@${VPS_HOST}:${REMOTE_DIR}/
 
-      - name: Install prod deps & restart server
+      # ─────────────────────────────────────────────
+      # 6️⃣ Install prod deps & restart via PM2
+      # ─────────────────────────────────────────────
+      - name: Install deps & restart app
         run: |
           SSH_OPTS="-i ~/.ssh/id_ed25519 -p ${VPS_PORT} -o StrictHostKeyChecking=yes"
 
           ssh $SSH_OPTS ${VPS_USER}@${VPS_HOST} << EOF
           cd ${REMOTE_DIR}
-          
-          # # Write environment file
-          # cat > .env << EENV
-          # PAYLOAD_SECRET=${PAYLOAD_SECRET}
-          # PAYLOAD_PUBLIC_SERVER_URL=${PAYLOAD_PUBLIC_SERVER_URL}
-          # DATABASE_URL=${DATABASE_URL}
-          # DATABASE_AUTH_TOKEN=${DATABASE_AUTH_TOKEN}
-          # EENV
-          
-          # Install only prod dependencies (if needed)
-          cd ${REMOTE_DIR}
-          npm ci
-          
-          # Restart app with PM2 on port 3000
-          pm2 delete bhakti-organic || echo "bhakti-organic not running"
-          pm2 start "npm run start -- -p 4000" --name bhakti-organic --cwd ${REMOTE_DIR}
+
+          npm ci --omit=dev
+
+          pm2 delete bhakti-organic || true
+          pm2 start "npm run start -- -p 4000" \
+            --name bhakti-organic \
+            --cwd ${REMOTE_DIR}
+
           pm2 save
           EOF
