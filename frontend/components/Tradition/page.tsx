@@ -1,35 +1,45 @@
 export default function Tradition() {
   return (
-    <section className="bg-[#EE9D2B1A] w-full">
-      <div className="max-w-7xl mx-auto px-6 py-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-          <div>
-            <span className="text-orange-500 text-sm font-medium">
-              Our Story
-            </span>
-            <h2 className="text-2xl font-semibold mt-2">
-              Rooted in Tradition,
-              <br />
-              Roasted for Today.
-            </h2>
-            <p className="mt-4 text-sm text-gray-600 leading-relaxed">
-              Our makhanas are carefully sourced from trusted farmers and
-              roasted using traditional methods to preserve their natural crunch
-              and nutrition. Every bite delivers wholesome goodness with bold
-              flavors.
-            </p>
-            <button className="mt-6 bg-orange-500 text-white px-6 py-2 rounded">
-              Read Our Story
-            </button>
+    <section className="bg-[#f2ece7] py-20">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+        {/* Left Content */}
+        <div>
+          <div className="flex items-center gap-3 text-sm font-medium text-[#4a2612] mb-4">
+            <span className="w-8 h-[2px] bg-[#4a2612]" />
+            OUR STORY
           </div>
 
-          <div>
-            <img
-              src="/farmer.png"
-              alt=""
-              className="w-full h-[320px] object-cover rounded-lg shadow"
-            />
-          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-[#4a2612] leading-snug">
+            Rooted in Tradition,
+            <br />
+            Roasted for Today.
+          </h2>
+
+          <p className="mt-6 text-gray-700 leading-relaxed max-w-lg">
+            Our journey began in the lush wetlands of Bihar, India, where 90% of
+            the world's fox nuts are grown. We work directly with local farmers
+            to handpick the best harvest, ensuring fair trade and sustainable
+            practices.
+          </p>
+
+          <p className="mt-4 text-gray-700 leading-relaxed max-w-lg">
+            Unlike traditional fried snacks, our Makhanas are slow-roasted to
+            perfection, locking in nutrients while delivering that satisfying
+            crunch you crave. No guilt, just pure goodness.
+          </p>
+
+          <button className="mt-8 bg-black text-white px-6 py-3 rounded-md">
+            Read Full Story
+          </button>
+        </div>
+
+        {/* Right Image */}
+        <div className="flex justify-center">
+          <img
+            src="/farmer.png"
+            alt="Our Story"
+            className="w-full max-w-lg rounded-2xl shadow-2xl"
+          />
         </div>
       </div>
     </section>

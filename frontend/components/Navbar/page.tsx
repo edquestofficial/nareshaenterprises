@@ -1,28 +1,53 @@
 "use client";
 import { useState } from "react";
 
-export default function Navbar() {
+export default function BhaktiNavbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-orange-500">Makhana</h1>
-        <div className="flex gap-6 justify-between items-center">
-          {/* Desktop Menu */}
-          <nav className="hidden md:flex space-x-6 text-sm font-medium">
-            <a href="#">Home</a>
-            <a href="#">Shop</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-          </nav>
-          <button className="hidden md:block bg-orange-500 text-white px-4 py-2 rounded text-sm">
-            Buy Now
-          </button>
+    <header className="bg-[#fffaf5] border-b sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <img src="/logo.svg" className="w-10 h-10" alt="Bhakti Organic" />
+          <span className="font-semibold text-lg text-[#4a2612]">
+            Bhakti <span className="font-bold">Organic</span>
+          </span>
         </div>
 
-        {/* Mobile Button */}
-        <button className="md:hidden text-2xl" onClick={() => setOpen(!open)}>
+        {/* Search Bar - Desktop */}
+        <div className="hidden md:flex items-center bg-white rounded-full px-4 py-2 shadow-sm w-[320px]">
+          <svg
+            className="w-4 h-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 104.5 4.5a7.5 7.5 0 0012.15 12.15z" />
+          </svg>
+          <input
+            type="text"
+            placeholder="Search products..."
+            className="ml-2 text-sm outline-none w-full bg-transparent"
+          />
+        </div>
+
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[#4a2612]">
+          <a href="#">Products</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <button className="bg-[#4a2612] text-white px-5 py-2 rounded-md">
+            View Cart
+          </button>
+        </nav>
+
+        {/* Mobile Hamburger */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden text-2xl text-[#4a2612]"
+        >
           ☰
         </button>
       </div>
@@ -30,23 +55,32 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {open && (
         <div className="md:hidden bg-white border-t">
-          <nav className="flex flex-col px-6 py-4 space-y-3 text-sm">
-            <a href="#" onClick={() => setOpen(false)}>
-              Home
-            </a>
-            <a href="#" onClick={() => setOpen(false)}>
-              Shop
-            </a>
-            <a href="#" onClick={() => setOpen(false)}>
-              About
-            </a>
-            <a href="#" onClick={() => setOpen(false)}>
-              Contact
-            </a>
-            <button className="bg-orange-500 text-white py-2 rounded">
-              Buy Now
-            </button>
-          </nav>
+          <div className="px-6 py-4 space-y-4">
+            {/* Search */}
+            <div className="flex items-center bg-gray-100 rounded-full px-4 py-2">
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="text-sm outline-none w-full bg-transparent"
+              />
+            </div>
+
+            {/* Links */}
+            <nav className="flex flex-col gap-3 text-sm font-medium text-[#4a2612]">
+              <a href="#" onClick={() => setOpen(false)}>
+                Products
+              </a>
+              <a href="#" onClick={() => setOpen(false)}>
+                About
+              </a>
+              <a href="#" onClick={() => setOpen(false)}>
+                Contact
+              </a>
+              <button className="bg-[#4a2612] text-white py-2 rounded-md">
+                View Cart
+              </button>
+            </nav>
+          </div>
         </div>
       )}
     </header>

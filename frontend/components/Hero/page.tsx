@@ -1,23 +1,34 @@
 export default function Hero() {
   return (
     <section className="max-w-7xl mx-auto px-6 py-10">
-      <div className="relative rounded-xl overflow-hidden">
+      <div className="relative h-[420px] rounded-2xl overflow-hidden shadow-lg">
+        {/* Background Image */}
         <img
-          src="/banner.png"
-          className="w-full h-[560px] object-cover"
-          alt=""
+          src="/bannernew.png"
+          alt="Makhana Banner"
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40 flex items-center">
-          <div className="text-white px-6 md:px-10 max-w-2xl">
-            <h1 className="text-2xl md:text-6xl font-bold">
+
+        {/* Dark Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#4a2612]/90 to-[#4a2612]/20" />
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex items-center">
+          <div className="px-10 max-w-xl text-white">
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight">
               Crunchy, Healthy,
               <br />
-              Guilt-Free Snacking
+              Guilt-Free
+              <br />
+              Snacking.
             </h1>
-            <p className="mt-4 text-sm">
-              Premium roasted makhanas packed with protein & fiber.
+
+            <p className="mt-4 text-sm md:text-base text-white/90 leading-relaxed">
+              Premium Fox Nuts (Makhana) sourced directly from the finest farms.
+              Experience the perfect blend of taste and health in every bite.
             </p>
-            <button className="mt-6 bg-orange-500 px-6 py-2 rounded-md">
+
+            <button className="mt-6 bg-[#f3d2bf] text-[#4a2612] font-medium px-6 py-2 rounded-md shadow">
               View Collection
             </button>
           </div>
