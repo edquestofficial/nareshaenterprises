@@ -4,7 +4,7 @@ export default function Tradition() {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
         {/* Left Content */}
         <div>
-          <div className="flex items-center gap-3 text-sm font-medium text-[#4a2612] mb-4">
+          <div className="flex items-center gap-3 text-sm font-bold text-[#4a2612] mb-4">
             <span className="w-8 h-[2px] bg-[#4a2612]" />
             OUR STORY
           </div>

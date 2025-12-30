@@ -1,11 +1,12 @@
 "use client";
+import Link from "next/link";
 import { useState } from "react";
 
-export default function BhaktiNavbar() {
+export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="bg-[#fffaf5] border-b sticky top-0 z-50">
+    <header className="bg-[#fff] border-b border-[#F4F3F0] sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
@@ -16,7 +17,7 @@ export default function BhaktiNavbar() {
         </div>
 
         {/* Search Bar - Desktop */}
-        <div className="hidden md:flex items-center bg-white rounded-full px-4 py-2 shadow-sm w-[320px]">
+        <div className="hidden md:flex items-center bg-white rounded-sm px-4 py-2 shadow-sm w-[320px]">
           <svg
             className="w-4 h-4 text-gray-400"
             fill="none"
@@ -35,7 +36,7 @@ export default function BhaktiNavbar() {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[#4a2612]">
-          <a href="#">Products</a>
+          <Link href="products">Products</Link>
           <a href="#">About</a>
           <a href="#">Contact</a>
           <button className="bg-[#4a2612] text-white px-5 py-2 rounded-md">
