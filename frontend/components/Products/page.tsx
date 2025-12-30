@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const items = [
   {
@@ -29,24 +29,54 @@ const items = [
   },
 ];
 
-export default function Products() {
-  const [qty, setQty] = useState(items.map(() => 1));
+interface ProductItem {
+  name: string;
+  desc: string;
+  price: number;
+  img: string;
+  tag: string | null;
+}
+
+export default function Products({ category = "Makhana" }: { category?: string }) {
+  const [itemss, setItems] = useState<ProductItem[]>([]);
+  const [qty, setQty] = useState<number[]>([]);
+
+    // Fetch data from API
+  useEffect(() => {
+    fetch(`/api/Products/Mukhana?productName=${category}`)
+      .then((res) => res.json())
+      .then((data) => {
+        // Convert API data to UI format
+        const formatted = data.map((item: any) => ({
+          name: item.variantName,
+          desc: item.description  ,
+          price: item.price,
+          img: item.image  ,
+          tag: item.tag || null,
+        }));
+
+        setItems(formatted);
+        setQty(formatted.map(() => 1));
+      });
+  }, [category]);
+  console.log("itemss", itemss);
 
   const changeQty = (i, val) => {
     setQty((q) => q.map((x, idx) => (idx === i ? Math.max(1, x + val) : x)));
   };
+  
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">Our Best Selling Makhanas</h2>
+        <h2 className="text-2xl font-semibold">Our Best Selling {category}</h2>
         <a href="#" className="text-sm text-[#4a2612] font-medium">
           View All →
         </a>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {items.map((p, i) => (
+        {itemss.map((p, i) => (
           <div
             key={i}
             className="bg-white rounded-xl border shadow-sm overflow-hidden"
