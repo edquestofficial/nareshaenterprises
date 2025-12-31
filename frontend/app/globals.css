@@ -31,3 +31,10 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.scrollbar {
+  scrollbar-width: none;
+}
+.br {
+  border: 2px solid red;
+}
