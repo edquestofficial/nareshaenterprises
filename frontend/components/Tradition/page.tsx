@@ -1,3 +1,6 @@
+import Image from "next/image";
+import FarmerImg from "@/assets/farmer.png";
+
 export default function Tradition() {
   return (
     <section className="bg-[#f2ece7] py-20">
@@ -35,8 +38,8 @@ export default function Tradition() {
 
         {/* Right Image */}
         <div className="flex justify-center">
-          <img
-            src="/farmer.png"
+          <Image
+            src={FarmerImg}
             alt="Our Story"
             className="w-full max-w-lg rounded-2xl shadow-2xl"
           />
