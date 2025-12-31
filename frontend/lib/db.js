@@ -20,7 +20,21 @@ db.prepare(`
     price INTEGER,
     description TEXT,
     image TEXT,
-    tag TEXT
+    tag TEXT,
+    size TEXT,
+    description2 TEXT,
+    description3 TEXT,
+    discount TEXT,
+    servingSize TEXT,
+    servingsPerContainer TEXT,
+    calories TEXT,
+    totalFat TEXT,
+    saturatedFat TEXT,
+    sodium TEXT,
+    totalCarbohydrate TEXT,
+    dietaryFiber TEXT,
+    protein TEXT,
+    ingredients TEXT
   )
 `).run();
 

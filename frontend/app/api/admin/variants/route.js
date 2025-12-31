@@ -13,6 +13,20 @@ export async function POST(req) {
     const price = formData.get("price");
     const tag = formData.get("tag");
     const file = formData.get("image");
+    const size = formData.get("size");
+    const description2 = formData.get("description2");
+    const description3 = formData.get("description3");
+    const discount = formData.get("discount");
+    const servingSize = formData.get("servingSize");
+    const servingsPerContainer = formData.get("servingsPerContainer");
+    const calories = formData.get("calories");
+    const totalFat = formData.get("totalFat");
+    const saturatedFat = formData.get("saturatedFat");
+    const sodium = formData.get("sodium");
+    const totalCarbohydrate = formData.get("totalCarbohydrate");
+    const dietaryFiber = formData.get("dietaryFiber");
+    const protein = formData.get("protein");
+    const ingredients = formData.get("ingredients");
 
     if (!name || !price) {
       return NextResponse.json({ error: "Name and price are required" }, { status: 400 });
@@ -33,15 +47,29 @@ export async function POST(req) {
     // Insert variant
     db.prepare(`
       INSERT INTO variants
-      (product_id, name, description, price, image, tag)
-      VALUES (?, ?, ?, ?, ?, ?)
+      (product_id, name, description, price, image, tag, size, description2, description3, discount, servingSize, servingsPerContainer, calories, totalFat, saturatedFat, sodium, totalCarbohydrate, dietaryFiber, protein, ingredients)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       productId || 1,
       name,
       description,
       price,
       imagePath,
-      tag
+      tag,
+      size,
+      description2,
+      description3,
+      discount,
+      servingSize,
+      servingsPerContainer,
+      calories,
+      totalFat,
+      saturatedFat,
+      sodium,
+      totalCarbohydrate,
+      dietaryFiber,
+      protein,
+      ingredients
     );
 
     return NextResponse.json({ success: true });
@@ -54,7 +82,7 @@ export async function POST(req) {
 
 export async function GET() {
   const variants = db.prepare(`
-    SELECT id, product_id, name, price, image, tag
+    SELECT id, product_id, name,description, price, image, tag, size, description2, description3, discount, servingSize, servingsPerContainer, calories, totalFat, saturatedFat, sodium, totalCarbohydrate, dietaryFiber, protein, ingredients
     FROM variants
   `).all();
 

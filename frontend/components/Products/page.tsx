@@ -1,33 +1,33 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const items = [
-  {
-    name: "Classic Salted",
-    desc: "The original crunch, simply salted.",
-    price: 299,
-    img: "/makhana1.png",
-    tag: "Bestseller",
-  },
-  {
-    name: "Peri Peri Punch",
-    desc: "Spicy kick for the bold snacker.",
-    price: 299,
-    img: "/makhana2.png",
-  },
-  {
-    name: "Cream & Onion",
-    desc: "Savory delight with herbs.",
-    price: 299,
-    img: "/makhana3.png",
-  },
-  {
-    name: "Turmeric Gold",
-    desc: "Immunity booster blend.",
-    price: 299,
-    img: "/makhana4.png",
-  },
-];
+// const items = [
+//   {
+//     name: "Classic Salted",
+//     desc: "The original crunch, simply salted.",
+//     price: 299,
+//     img: "/makhana1.png",
+//     tag: "Bestseller",
+//   },
+//   {
+//     name: "Peri Peri Punch",
+//     desc: "Spicy kick for the bold snacker.",
+//     price: 299,
+//     img: "/makhana2.png",
+//   },
+//   {
+//     name: "Cream & Onion",
+//     desc: "Savory delight with herbs.",
+//     price: 299,
+//     img: "/makhana3.png",
+//   },
+//   {
+//     name: "Turmeric Gold",
+//     desc: "Immunity booster blend.",
+//     price: 299,
+//     img: "/makhana4.png",
+//   },
+// ];
 
 interface ProductItem {
   name: string;
@@ -35,6 +35,7 @@ interface ProductItem {
   price: number;
   img: string;
   tag: string | null;
+  size: string;
 }
 
 export default function Products({ category = "Makhana" }: { category?: string }) {
@@ -43,7 +44,7 @@ export default function Products({ category = "Makhana" }: { category?: string }
 
     // Fetch data from API
   useEffect(() => {
-    fetch(`/api/Products/Mukhana?productName=${category}`)
+    fetch(`/api/admin/variants?productName=${category}`)
       .then((res) => res.json())
       .then((data) => {
         // Convert API data to UI format
@@ -53,6 +54,20 @@ export default function Products({ category = "Makhana" }: { category?: string }
           price: item.price,
           img: item.image  ,
           tag: item.tag || null,
+          size: item.size || null,
+          description2: item.description2 || null,
+          description3: item.description3 || null,
+          discount: item.discount || null,
+          servingSize: item.servingSize || null,
+          servingsPerContainer: item.servingsPerContainer || null,
+          calories: item.calories || null,
+          totalFat: item.totalFat || null,
+          saturatedFat: item.saturatedFat || null,
+          sodium: item.sodium || null,
+          totalCarbohydrate: item.totalCarbohydrate || null,
+          dietaryFiber: item.dietaryFiber || null,
+          protein: item.protein || null,
+          ingredients: item.ingredients || null,
         }));
 
         setItems(formatted);
@@ -97,9 +112,9 @@ export default function Products({ category = "Makhana" }: { category?: string }
               {/* Weight + Quantity */}
               <div className="flex items-center gap-3 mt-4">
                 <select className="border rounded-md px-2 py-1 text-sm">
-                  <option>100g</option>
-                  <option>250g</option>
-                  <option>500g</option>
+                  <option>{p.size}</option>
+                  {/* <option>250g</option>
+                  <option>500g</option> */}
                 </select>
 
                 <div className="flex items-center border rounded-md px-2">
