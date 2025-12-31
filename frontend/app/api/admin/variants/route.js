@@ -6,7 +6,7 @@ import path from "path";
 export async function POST(req) {
   try {
     const formData = await req.formData();
-    
+
     const productId = formData.get("productId");
     const name = formData.get("name");
     const description = formData.get("description");
@@ -29,7 +29,10 @@ export async function POST(req) {
     const ingredients = formData.get("ingredients");
 
     if (!name || !price) {
-      return NextResponse.json({ error: "Name and price are required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Name and price are required" },
+        { status: 400 }
+      );
     }
 
     let imagePath = null;
@@ -38,18 +41,25 @@ export async function POST(req) {
       const buffer = Buffer.from(bytes);
 
       const filename = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-      const uploadPath = path.join(process.cwd(), "public", "uploads", filename);
-      
+      const uploadPath = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        filename
+      );
+
       await writeFile(uploadPath, buffer);
       imagePath = `/uploads/${filename}`;
     }
 
     // Insert variant
-    db.prepare(`
+    db.prepare(
+      `
       INSERT INTO variants
       (product_id, name, description, price, image, tag, size, description2, description3, discount, servingSize, servingsPerContainer, calories, totalFat, saturatedFat, sodium, totalCarbohydrate, dietaryFiber, protein, ingredients)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
+    `
+    ).run(
       productId || 1,
       name,
       description,
@@ -75,16 +85,30 @@ export async function POST(req) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Database or Upload error:", error);
-    return NextResponse.json({ error: "Failed to process request" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to process request" },
+      { status: 500 }
+    );
   }
 }
 
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const productName = searchParams.get("productName");
 
-export async function GET() {
-  const variants = db.prepare(`
-    SELECT id, product_id, name,description, price, image, tag, size, description2, description3, discount, servingSize, servingsPerContainer, calories, totalFat, saturatedFat, sodium, totalCarbohydrate, dietaryFiber, protein, ingredients
+  let query = `
+    SELECT variants.id, variants.product_id, variants.name, variants.description, variants.price, variants.image, variants.tag, variants.size, variants.description2, variants.description3, variants.discount, variants.servingSize, variants.servingsPerContainer, variants.calories, variants.totalFat, variants.saturatedFat, variants.sodium, variants.totalCarbohydrate, variants.dietaryFiber, variants.protein, variants.ingredients
     FROM variants
-  `).all();
+  `;
+
+  const params = [];
+
+  if (productName) {
+    query += ` JOIN products ON variants.product_id = products.id WHERE products.name LIKE ?`;
+    params.push(`%${productName}%`);
+  }
+
+  const variants = db.prepare(query).all(...params);
 
   return NextResponse.json(variants);
 }

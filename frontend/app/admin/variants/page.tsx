@@ -8,7 +8,6 @@ function VariantsContent() {
   const productIdFilter = searchParams.get("productId");
   const [editingId, setEditingId] = useState<number | null>(null);
 
-
   const [variants, setVariants] = useState<any[]>([]);
   const [form, setForm] = useState({
     productId: productIdFilter ? Number(productIdFilter) : 1,
@@ -50,7 +49,7 @@ function VariantsContent() {
       formData.append("description", form.description);
       formData.append("price", String(form.price));
       formData.append("tag", form.tag);
-      
+
       // Append new fields
       formData.append("size", form.size);
       formData.append("description2", form.description2);
@@ -70,16 +69,13 @@ function VariantsContent() {
       if (file) {
         formData.append("image", file);
       }
-const res = await fetch(
-  editingId
-    ? `/api/admin/variants/${editingId}`
-    : "/api/admin/variants",
-  {
-    method: editingId ? "PUT" : "POST",
-    body: formData,
-  }
-);
-
+      const res = await fetch(
+        editingId ? `/api/admin/variants/${editingId}` : "/api/admin/variants",
+        {
+          method: editingId ? "PUT" : "POST",
+          body: formData,
+        }
+      );
 
       if (res.ok) {
         alert("Variant added successfully!");
@@ -104,8 +100,6 @@ const res = await fetch(
           dietaryFiber: "",
           protein: "",
           ingredients: "",
-          
-       
         });
         setFile(null);
         setEditingId(null);
@@ -139,84 +133,82 @@ const res = await fetch(
     loadVariants();
   };
 
-  //edit vairenrts 
+  //edit vairenrts
   const startEdit = (variant: any) => {
-  setEditingId(variant.id);
+    setEditingId(variant.id);
 
-  setForm({
-    productId: variant.product_id,
-    name: variant.name || "",
-    description: variant.description || "",
-    price: variant.price || "",
-    image: "",
-    tag: variant.tag || "",
-    size: variant.size || "",
-    description2: variant.description2 || "",
-    description3: variant.description3 || "",
-    discount: variant.discount || "",
-    serving_size: variant.serving_size || "",
-    servingsPerContainer: variant.servings_per_container || "",
-    calories: variant.calories || "",
-    totalFat: variant.total_fat || "",
-    saturatedFat: variant.saturated_fat || "",
-    sodium: variant.sodium || "",
-    totalCarbohydrate: variant.total_carbohydrate || "",
-    dietaryFiber: variant.dietary_fiber || "",
-    protein: variant.protein || "",
-    ingredients: variant.ingredients || "",
-  });
+    setForm({
+      productId: variant.product_id,
+      name: variant.name || "",
+      description: variant.description || "",
+      price: variant.price || "",
+      image: "",
+      tag: variant.tag || "",
+      size: variant.size || "",
+      description2: variant.description2 || "",
+      description3: variant.description3 || "",
+      discount: variant.discount || "",
+      serving_size: variant.serving_size || "",
+      servingsPerContainer: variant.servings_per_container || "",
+      calories: variant.calories || "",
+      totalFat: variant.total_fat || "",
+      saturatedFat: variant.saturated_fat || "",
+      sodium: variant.sodium || "",
+      totalCarbohydrate: variant.total_carbohydrate || "",
+      dietaryFiber: variant.dietary_fiber || "",
+      protein: variant.protein || "",
+      ingredients: variant.ingredients || "",
+    });
 
-  setFile(null);
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
+    setFile(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
+  //discount logic
+  const getFinalPrice = (price: number, discount: number) => {
+    if (!discount || discount <= 0) return price;
+    return Math.round(price - (price * discount) / 100);
+  };
 
   const filteredVariants = productIdFilter
     ? variants.filter((v) => v.product_id === Number(productIdFilter))
     : variants;
 
- return (
-  <div className="max-w-7xl mx-auto px-10 py-8">
-    <div className="flex gap-8 h-[85vh]">
+  return (
+    <div className="mx-auto px-10 py-8 bg-[#CBCBCB] md:mb-40">
+      <div className="flex gap-8 h-[85vh]">
+        {/* ================= RIGHT : ADD VARIANT FORM ================= */}
+        <div className="w-2/3 sticky top-10 h-[80vh] flex flex-col">
+          <h2 className="text-xl font-bold mb-4">
+            {editingId ? "Edit Variant" : "Add New Variant"}
+          </h2>
 
-      
+          <div className="bg-gray-50 border rounded-xl p-6 flex-1 overflow-y-auto scrollbar">
+            <input
+              placeholder="Variant Name"
+              className="border rounded p-2 w-full mb-3"
+              value={form.name}
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
 
-      {/* ================= RIGHT : ADD VARIANT FORM ================= */}
-      <div className="w-1/3 sticky top-10 h-fit">
-        <h2 className="text-xl font-bold mb-4">
-  {editingId ? "Edit Variant" : "Add New Variant"}
-</h2>
+            <input
+              placeholder="Description"
+              className="border rounded p-2 w-full mb-3"
+              value={form.description}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
+            />
 
-        <div className="bg-gray-50 border rounded-xl p-6">
-          <input
-            placeholder="Variant Name"
-            className="border rounded p-2 w-full mb-3"
-            value={form.name}
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value })
-            }
-          />
+            <input
+              placeholder="Price"
+              type="number"
+              className="border rounded p-2 w-full mb-3"
+              value={form.price}
+              onChange={(e) => setForm({ ...form, price: e.target.value })}
+            />
 
-          <input
-            placeholder="Description"
-            className="border rounded p-2 w-full mb-3"
-            value={form.description}
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Price"
-            type="number"
-            className="border rounded p-2 w-full mb-3"
-            value={form.price}
-            onChange={(e) =>
-              setForm({ ...form, price:  e.target.valuevu })
-            }
-          />
-
-          {/* {!productIdFilter && (
+            {/* {!productIdFilter && (
             <input
               placeholder="Product ID"
               type="number"
@@ -231,225 +223,231 @@ const res = await fetch(
             />
           )} */}
 
-          <div className="mb-3">
-            <label className="text-sm font-medium mb-1 block">
-              Variant Image
-            </label>
+            <div className="mb-3">
+              <label className="text-sm font-medium mb-1 block">
+                Variant Image
+              </label>
+              <input
+                type="file"
+                accept="image/*"
+                className="border rounded p-2 w-full bg-white"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+              />
+            </div>
+
+            <select
+              className="border rounded p-2 w-full mb-4"
+              value={form.tag}
+              onChange={(e) => setForm({ ...form, tag: e.target.value })}
+            >
+              <option value="">Tag(optional)</option>
+              <option value="bestseller">BestSeller</option>
+              <option value="featured">Featured</option>
+            </select>
             <input
-              type="file"
-              accept="image/*"
-              className="border rounded p-2 w-full bg-white"
+              placeholder="Size (e.g. 250g)"
+              className="border rounded p-2 w-full mb-3"
+              value={form.size}
+              onChange={(e) => setForm({ ...form, size: e.target.value })}
+            />
+
+            <textarea
+              placeholder="Description Line 2"
+              className="border rounded p-2 w-full mb-3"
+              value={form.description2}
               onChange={(e) =>
-                setFile(e.target.files?.[0] || null)
+                setForm({ ...form, description2: e.target.value })
               }
             />
+
+            <textarea
+              placeholder="Description Line 3"
+              className="border rounded p-2 w-full mb-3"
+              value={form.description3}
+              onChange={(e) =>
+                setForm({ ...form, description3: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Discount (%)"
+              type="number"
+              className="border rounded p-2 w-full mb-3"
+              value={form.discount}
+              onChange={(e) => setForm({ ...form, discount: e.target.value })}
+            />
+
+            <input
+              placeholder="Serving Size (e.g. 1–2 people)"
+              className="border rounded p-2 w-full mb-3"
+              value={form.serving_size}
+              onChange={(e) =>
+                setForm({ ...form, serving_size: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Calories"
+              className="border rounded p-2 w-full mb-3"
+              value={form.calories}
+              onChange={(e) => setForm({ ...form, calories: e.target.value })}
+            />
+
+            <input
+              placeholder="Protein"
+              className="border rounded p-2 w-full mb-3"
+              value={form.protein}
+              onChange={(e) => setForm({ ...form, protein: e.target.value })}
+            />
+            <input
+              placeholder="Total Fat (e.g. 5g)"
+              className="border rounded p-2 w-full mb-3"
+              value={form.totalFat}
+              onChange={(e) => setForm({ ...form, totalFat: e.target.value })}
+            />
+
+            <input
+              placeholder="Saturated Fat (e.g. 1g)"
+              className="border rounded p-2 w-full mb-3"
+              value={form.saturatedFat}
+              onChange={(e) =>
+                setForm({ ...form, saturatedFat: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Sodium (e.g. 120mg)"
+              className="border rounded p-2 w-full mb-3"
+              value={form.sodium}
+              onChange={(e) => setForm({ ...form, sodium: e.target.value })}
+            />
+
+            <input
+              placeholder="Total Carbohydrate (e.g. 15g)"
+              className="border rounded p-2 w-full mb-3"
+              value={form.totalCarbohydrate}
+              onChange={(e) =>
+                setForm({ ...form, totalCarbohydrate: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Dietary Fiber (e.g. 3g)"
+              className="border rounded p-2 w-full mb-3"
+              value={form.dietaryFiber}
+              onChange={(e) =>
+                setForm({ ...form, dietaryFiber: e.target.value })
+              }
+            />
+
+            <textarea
+              placeholder="Ingredients"
+              className="border rounded p-2 w-full mb-3"
+              value={form.ingredients}
+              onChange={(e) =>
+                setForm({ ...form, ingredients: e.target.value })
+              }
+            />
+
+            <button
+              onClick={submit}
+              className="w-full bg-black text-white py-2 rounded-lg font-medium hover:opacity-90"
+            >
+              {editingId ? "Update Variant" : "Save Variant"}
+            </button>
+          </div>
+        </div>
+        {/* ================= LEFT : VARIANTS LIST ================= */}
+        <div className="w-1/3 border rounded-xl p-6 overflow-y-auto">
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-2xl font-bold">
+              {productIdFilter ? "Product Variants" : "All Variants"}
+            </h1>
+
+            {productIdFilter && (
+              <button
+                onClick={() => router.push("/admin/variants")}
+                className="text-sm text-blue-600 hover:underline"
+              >
+                Show All
+              </button>
+            )}
           </div>
 
-          <input
-            placeholder="Tag (optional)"
-            className="border rounded p-2 w-full mb-4"
-            value={form.tag}
-            onChange={(e) =>
-              setForm({ ...form, tag: e.target.value })
-            }
-          />
-          <input
-  placeholder="Size (e.g. 250g)"
-  className="border rounded p-2 w-full mb-3"
-  value={form.size}
-  onChange={(e) => setForm({ ...form, size: e.target.value })}
-/>
-
-<textarea
-  placeholder="Description Line 2"
-  className="border rounded p-2 w-full mb-3"
-  value={form.description2}
-  onChange={(e) =>
-    setForm({ ...form, description2: e.target.value })
-  }
-/>
-
-<textarea
-  placeholder="Description Line 3"
-  className="border rounded p-2 w-full mb-3"
-  value={form.description3}
-  onChange={(e) =>
-    setForm({ ...form, description3: e.target.value })
-  }
-/>
-
-
-<input
-  placeholder="Discount (%)"
-  type="number"
-  className="border rounded p-2 w-full mb-3"
-  value={form.discount}
-  onChange={(e) => setForm({ ...form, discount: e.target.value })}
-/>
-
-<input
-  placeholder="Serving Size (e.g. 1–2 people)"
-  className="border rounded p-2 w-full mb-3"
-  value={form.serving_size}
-  onChange={(e) =>
-    setForm({ ...form, serving_size: e.target.value })
-  }
-/>
-
-<input
-  placeholder="Calories"
-  className="border rounded p-2 w-full mb-3"
-  value={form.calories}
-  onChange={(e) =>
-    setForm({ ...form, calories: e.target.value })
-  }
-/>
-
-<input
-  placeholder="Protein"
-  className="border rounded p-2 w-full mb-3"
-  value={form.protein}
-  onChange={(e) =>
-    setForm({ ...form, protein: e.target.value })
-  }
-/>
-<input
-  placeholder="Total Fat (e.g. 5g)"
-  className="border rounded p-2 w-full mb-3"
-  value={form.totalFat}
-  onChange={(e) =>
-    setForm({ ...form, totalFat: e.target.value })
-  }
-/>
-
-<input
-  placeholder="Saturated Fat (e.g. 1g)"
-  className="border rounded p-2 w-full mb-3"
-  value={form.saturatedFat}
-  onChange={(e) =>
-    setForm({ ...form, saturatedFat: e.target.value })
-  }
-/>
-
-<input
-  placeholder="Sodium (e.g. 120mg)"
-  className="border rounded p-2 w-full mb-3"
-  value={form.sodium}
-  onChange={(e) =>
-    setForm({ ...form, sodium: e.target.value })
-  }
-/>
-
-<input
-  placeholder="Total Carbohydrate (e.g. 15g)"
-  className="border rounded p-2 w-full mb-3"
-  value={form.totalCarbohydrate}
-  onChange={(e) =>
-    setForm({ ...form, totalCarbohydrate: e.target.value })
-  }
-/>
-
-<input
-  placeholder="Dietary Fiber (e.g. 3g)"
-  className="border rounded p-2 w-full mb-3"
-  value={form.dietaryFiber}
-  onChange={(e) =>
-    setForm({ ...form, dietaryFiber: e.target.value })
-  }
-/>
-
-
-<textarea
-  placeholder="Ingredients"
-  className="border rounded p-2 w-full mb-3"
-  value={form.ingredients}
-  onChange={(e) =>
-    setForm({ ...form, ingredients: e.target.value })
-  }
-/>
-
-
-       <button
-  onClick={submit}
-  className="w-full bg-black text-white py-2 rounded-lg font-medium hover:opacity-90"
->
-  {editingId ? "Update Variant" : "Save Variant"}
-</button>
-
-        </div>
-        
-      </div>
-       {/* ================= LEFT : VARIANTS LIST ================= */}
-      <div className="w-2/3 border rounded-xl p-6 overflow-y-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">
-            {productIdFilter ? "Product Variants" : "All Variants"}
-          </h1>
-
-          {productIdFilter && (
-            <button
-              onClick={() => router.push("/admin/variants")}
-              className="text-sm text-blue-600 hover:underline"
-            >
-              Show All
-            </button>
+          {filteredVariants.length === 0 && (
+            <p className="text-gray-500 text-center py-10">
+              No variants found.
+            </p>
           )}
-        </div>
 
-        {filteredVariants.length === 0 && (
-          <p className="text-gray-500 text-center py-10">
-            No variants found.
-          </p>
-        )}
+          <div className="space-y-4">
+            {filteredVariants.map((v) => (
+              <div
+                key={v.id}
+                className="flex justify-between items-center border rounded-lg p-4 hover:shadow-sm transition"
+              >
+                <div className="flex gap-4 items-center">
+                  <img
+                    src={v.image}
+                    className="w-16 h-16 rounded object-cover bg-gray-100"
+                  />
 
-        <div className="space-y-4">
-          {filteredVariants.map((v) => (
-            <div
-              key={v.id}
-              className="flex justify-between items-center border rounded-lg p-4 hover:shadow-sm transition"
-            >
-              <div className="flex gap-4 items-center">
-                <img
-                  src={v.image}
-                  className="w-16 h-16 rounded object-cover bg-gray-100"
-                />
+                  <div>
+                    <p className="font-semibold">{v.name}</p>
+                    <p className="font-semibold">{v.description}</p>
+                    {v.discount ? (
+                      <div className="flex gap-2 items-center">
+                        <span className="text-sm text-gray-400 line-through">
+                          ₹ {v.price}
+                        </span>
+                        <span className="text-sm font-semibold text-green-600">
+                          ₹ {getFinalPrice(Number(v.price), Number(v.discount))}
+                        </span>
+                        <span className="text-xs bg-green-100 text-green-700 px-2 rounded">
+                          {v.discount}% OFF
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500">₹ {v.price}</p>
+                    )}
 
-                <div>
-                  <p className="font-semibold">{v.name}</p>
-                   <p className="font-semibold">{v.description}</p>
-                  <p className="text-sm text-gray-500">₹ {v.price}</p>
-                  {v.tag && (
-                    <span className="inline-block mt-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
-                      {v.tag}
-                    </span>
-                  )}
+                    {v.tag && (
+                      <span className="inline-block mt-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">
+                        {v.tag}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => startEdit(v)}
+                    className="text-sm text-blue-600   cursor-pointer border rounded p-1"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const isConfirmed = window.confirm(
+                        "Are you sure you want to delete this variant?"
+                      );
+                      if (isConfirmed) {
+                        deleteVariant(v.id);
+                      }
+                    }}
+                    className="text-sm text-red-600  cursor-pointer border rounded p-1"
+                  >
+                    Delete
+                  </button>
                 </div>
               </div>
-
-             <div className="flex gap-3">
-  <button
-    onClick={() => startEdit(v)}
-    className="text-sm text-blue-600 hover:underline"
-  >
-    Edit
-  </button>
-
-  <button
-    onClick={() => deleteVariant(v.id)}
-    className="text-sm text-red-600 hover:underline"
-  >
-    Delete
-  </button>
-</div>
-
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
-
+  );
 }
 
 export default function AdminPage() {

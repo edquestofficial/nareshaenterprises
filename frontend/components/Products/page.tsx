@@ -36,23 +36,47 @@ interface ProductItem {
   img: string;
   tag: string | null;
   size: string;
+  discount: number | null;
 }
 
-export default function Products({ category = "Makhana" }: { category?: string }) {
+export default function Products({
+  category = "Makhana",
+}: {
+  category?: string;
+}) {
   const [itemss, setItems] = useState<ProductItem[]>([]);
   const [qty, setQty] = useState<number[]>([]);
 
-    // Fetch data from API
+  useEffect(() => {
+    const fetchVariantById = async () => {
+      try {
+        const res = await fetch("/api/admin/variants/2");
+
+        if (!res.ok) {
+          throw new Error("Failed to fetch variant");
+        }
+
+        const data = await res.json();
+        console.log("Variant by ID:", data);
+      } catch (error) {
+        console.error("Error fetching variant:", error);
+      }
+    };
+
+    fetchVariantById();
+  }, []);
+
+  // Fetch data from API
   useEffect(() => {
     fetch(`/api/admin/variants?productName=${category}`)
       .then((res) => res.json())
       .then((data) => {
         // Convert API data to UI format
         const formatted = data.map((item: any) => ({
-          name: item.variantName,
-          desc: item.description  ,
+          name: item.name,
+          desc: item.description,
           price: item.price,
-          img: item.image  ,
+          img: item.image,
           tag: item.tag || null,
           size: item.size || null,
           description2: item.description2 || null,
@@ -79,8 +103,11 @@ export default function Products({ category = "Makhana" }: { category?: string }
   const changeQty = (i, val) => {
     setQty((q) => q.map((x, idx) => (idx === i ? Math.max(1, x + val) : x)));
   };
-  
 
+  const getFinalPrice = (price: number, discount: number | null) => {
+    if (!discount || discount <= 0) return price;
+    return Math.round(price - (price * discount) / 100);
+  };
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
       <div className="flex justify-between items-center mb-6">
@@ -90,8 +117,8 @@ export default function Products({ category = "Makhana" }: { category?: string }
         </a>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-        {itemss.map((p, i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 ">
+        {itemss.slice(0, 4).map((p, i) => (
           <div
             key={i}
             className="bg-white rounded-xl border shadow-sm overflow-hidden"
@@ -130,7 +157,24 @@ export default function Products({ category = "Makhana" }: { category?: string }
 
               {/* Price + Button */}
               <div className="flex justify-between items-center mt-4">
-                <span className="text-lg font-semibold">₹ {p.price}</span>
+                {p.discount ? (
+                  <div className="flex gap-2 items-center">
+                    <span className="text-sm text-gray-400 line-through">
+                      ₹ {p.price}
+                    </span>
+
+                    <span className="text-lg font-semibold text-green-600">
+                      ₹ {getFinalPrice(p.price, p.discount)}
+                    </span>
+
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
+                      {p.discount}% OFF
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-lg font-semibold">₹ {p.price}</span>
+                )}
+
                 <button className="bg-[#4a2612] text-white px-4 py-2 rounded-md text-sm">
                   Place Order
                 </button>

@@ -19,8 +19,29 @@ const insert = db.prepare(`
   VALUES (?, ?, ?, ?, ?, ?)
 `);
 
-insert.run(productId, "Classic Salted", "Classic Salted", 299, "/makhana1.png", "Bestseller");
-insert.run(productId, "Peri Peri Punch", "Peri Peri Punch", 299, "/makhana2.png", null);
-insert.run(productId, "Cream & Onion", "Cream & Onion", 299, "/makhana3.png", null);
+insert.run(
+  productId,
+  "Classic Salted",
+  "Classic Salted",
+  299,
+  "/makhana1.png",
+  "Bestseller"
+);
+insert.run(
+  productId,
+  "Peri Peri Punch",
+  "Peri Peri Punch",
+  299,
+  "/makhana2.png",
+  null
+);
+insert.run(
+  productId,
+  "Cream & Onion",
+  "Cream & Onion",
+  299,
+  "/makhana3.png",
+  null
+);
 
 console.log("✅ Database created & data inserted");

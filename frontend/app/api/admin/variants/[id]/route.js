@@ -6,20 +6,20 @@ import path from "path";
 export async function PUT(req, { params }) {
   try {
     const { id } = await params;
-    
+
     if (!id) {
-        return NextResponse.json({ error: "ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
     const formData = await req.formData();
-    
+
     const productId = formData.get("productId");
     const name = formData.get("name");
     const description = formData.get("description");
     const price = formData.get("price");
     const tag = formData.get("tag");
     const file = formData.get("image");
-    
+
     // New fields
     const size = formData.get("size");
     const description2 = formData.get("description2");
@@ -36,11 +36,12 @@ export async function PUT(req, { params }) {
     const protein = formData.get("protein");
     const ingredients = formData.get("ingredients");
 
-
     // 1. Check if variant exists
-    const existing = db.prepare("SELECT image FROM variants WHERE id = ?").get(id);
+    const existing = db
+      .prepare("SELECT image FROM variants WHERE id = ?")
+      .get(id);
     if (!existing) {
-        return NextResponse.json({ error: "Variant not found" }, { status: 404 });
+      return NextResponse.json({ error: "Variant not found" }, { status: 404 });
     }
 
     let imagePath = existing.image; // Default to keep old image
@@ -50,14 +51,20 @@ export async function PUT(req, { params }) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const filename = `${Date.now()}-${file.name.replace(/\s+/g, "-")}`;
-      const uploadPath = path.join(process.cwd(), "public", "uploads", filename);
-      
+      const uploadPath = path.join(
+        process.cwd(),
+        "public",
+        "uploads",
+        filename
+      );
+
       await writeFile(uploadPath, buffer);
       imagePath = `/uploads/${filename}`;
     }
 
     // 3. Update database
-    db.prepare(`
+    db.prepare(
+      `
       UPDATE variants SET
         product_id = ?,
         name = ?,
@@ -80,7 +87,8 @@ export async function PUT(req, { params }) {
         protein = ?,
         ingredients = ?
       WHERE id = ?
-    `).run(
+    `
+    ).run(
       productId,
       name,
       description,
@@ -105,10 +113,12 @@ export async function PUT(req, { params }) {
     );
 
     return NextResponse.json({ success: true });
-
   } catch (error) {
     console.error("Update error:", error);
-    return NextResponse.json({ error: "Failed to update variant" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update variant" },
+      { status: 500 }
+    );
   }
 }
 
@@ -125,6 +135,26 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Delete error:", error);
-    return NextResponse.json({ error: "Failed to delete variant" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to delete variant" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(req, { params }) {
+  try {
+    const { id } = await params;
+    const variant = db.prepare(`SELECT * FROM variants WHERE id=?`).get(id);
+    if (!variant) {
+      return NextResponse.json({ error: "Variant not found" }, { status: 404 });
+    }
+    return NextResponse.json(variant);
+  } catch (error) {
+    console.error("Get error:", error);
+    return NextResponse.json(
+      { error: "Failed to get variant" },
+      { status: 500 }
+    );
   }
 }
