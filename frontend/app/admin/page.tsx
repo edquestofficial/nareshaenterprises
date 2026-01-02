@@ -59,13 +59,13 @@ export default function AdminDashboard() {
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
       {/* PRODUCTS LIST */}
-      <div className="space-y-6">
+      <div className="space-y-6  ">
         {products.map((product) => (
           <div
             key={product.id}
             className="border rounded-lg p-4 flex justify-between items-center shadow-sm"
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 ">
               <Link
                 href={`/admin/variants?productId=${product.id}`}
                 className="text-lg font-semibold hover:underline"
@@ -74,7 +74,7 @@ export default function AdminDashboard() {
               </Link>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 ">
               <Link
                 href={`/admin/variants?productId=${product.id}`}
                 className="text-sm text-blue-600 border px-3 py-1 rounded hover:bg-blue-50"
@@ -94,13 +94,15 @@ export default function AdminDashboard() {
       </div>
 
       {/* ADD PRODUCT */}
-      <div className="mt-10 p-6 bg-gray-50 rounded-xl border">
-        <h2 className="text-lg font-semibold mb-4">Add New Product</h2>
+      <div className="mt-10 p-6 bg-gray-50 rounded-xl border ">
+        <h2 className="text-lg font-semibold mb-4 text-black">
+          Add New Product
+        </h2>
         <div className="flex gap-4">
           <input
             type="text"
             placeholder="Product Name (e.g. Walnuts)"
-            className="flex-1 border rounded px-4 py-2"
+            className="flex-1 border rounded px-4 py-2 text-black"
             value={newProductName}
             onChange={(e) => setNewProductName(e.target.value)}
           />

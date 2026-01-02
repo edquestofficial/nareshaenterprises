@@ -175,11 +175,11 @@ function VariantsContent() {
     : variants;
 
   return (
-    <div className="mx-auto px-10 py-8 bg-[#CBCBCB] md:mb-40">
+    <div className="mx-auto px-10 py-8 bg-[#CBCBCB] md:mb-40 ">
       <div className="flex gap-8 h-[85vh]">
         {/* ================= RIGHT : ADD VARIANT FORM ================= */}
         <div className="w-2/3 sticky top-10 h-[80vh] flex flex-col">
-          <h2 className="text-xl font-bold mb-4">
+          <h2 className="text-xl font-bold mb-4 text-black">
             {editingId ? "Edit Variant" : "Add New Variant"}
           </h2>
 
@@ -359,7 +359,7 @@ function VariantsContent() {
 
             <button
               onClick={submit}
-              className="w-full bg-black text-white py-2 rounded-lg font-medium hover:opacity-90"
+              className="w-full bg-black text-white py-2 rounded-lg font-medium hover:opacity-90 cursor-pointer"
             >
               {editingId ? "Update Variant" : "Save Variant"}
             </button>
