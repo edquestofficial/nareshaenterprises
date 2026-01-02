@@ -142,6 +142,7 @@ export async function DELETE(req, { params }) {
   }
 }
 
+// GET SINGLE VARIANT
 export async function GET(req, { params }) {
   try {
     const { id } = await params;
@@ -158,3 +159,5 @@ export async function GET(req, { params }) {
     );
   }
 }
+
+//get bests

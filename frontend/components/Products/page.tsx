@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 // const items = [
 //   {
@@ -30,6 +31,7 @@ import { useState, useEffect } from "react";
 // ];
 
 interface ProductItem {
+  id: number;
   name: string;
   desc: string;
   price: number;
@@ -44,6 +46,7 @@ export default function Products({
 }: {
   category?: string;
 }) {
+  const router = useRouter();
   const [itemss, setItems] = useState<ProductItem[]>([]);
   const [qty, setQty] = useState<number[]>([]);
 
@@ -73,6 +76,7 @@ export default function Products({
       .then((data) => {
         // Convert API data to UI format
         const formatted = data.map((item: any) => ({
+          id: item.id,
           name: item.name,
           desc: item.description,
           price: item.price,
@@ -121,7 +125,8 @@ export default function Products({
         {itemss.slice(0, 4).map((p, i) => (
           <div
             key={i}
-            className="bg-white rounded-xl border shadow-sm overflow-hidden"
+            onClick={() => router.push(`/product/${p.id}`)}
+            className="bg-white rounded-xl border shadow-sm overflow-hidden br"
           >
             <div className="relative">
               <img src={p.img} className="h-56 w-full object-cover" />
@@ -132,7 +137,7 @@ export default function Products({
               )}
             </div>
 
-            <div className="p-4">
+            <div className="p-4 ">
               <h3 className="font-semibold">{p.name}</h3>
               <p className="text-sm text-gray-500">{p.desc}</p>
 

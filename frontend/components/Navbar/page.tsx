@@ -43,9 +43,12 @@ export default function Navbar() {
           <Link href="/products">Products</Link>
           <a href="/about">About</a>
           <a href="#">Contact</a>
-          <button className="bg-[#4a2612] text-white px-5 py-2 rounded-md">
+          <Link
+            href="/cart"
+            className="bg-[#4a2612] text-white px-5 py-2 rounded-md"
+          >
             View Cart
-          </button>
+          </Link>
         </nav>
 
         {/* Mobile Hamburger */}
@@ -81,10 +84,12 @@ export default function Navbar() {
               <a href="#" onClick={() => setOpen(false)}>
                 Contact
               </a>
-              <Link href={"/cart"}>
-                <button className="bg-[#4a2612] text-white py-2 rounded-md">
-                  View Cart
-                </button>
+              <Link
+                href="/cart"
+                onClick={() => setOpen(false)}
+                className="bg-[#4a2612] text-white py-2 rounded-md text-center"
+              >
+                View Cart
               </Link>
             </nav>
           </div>
