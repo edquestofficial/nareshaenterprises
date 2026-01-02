@@ -24,10 +24,17 @@ body {
   color: var(--foreground);
 }
 
-
-.scrollbar{
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
   scrollbar-width: none;
 }
-.br{
-  border:2px solid red;
+
+.scrollbar {
+  scrollbar-width: none;
+}
+.br {
+  border: 2px solid red;
 }

@@ -1,100 +1,117 @@
 "use client";
 
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef } from "react";
+import ChevronLeft from "@/public/ChevronLeft.svg";
+import ChevronRight from "@/public/ChevronRight.svg";
 
 type Product = {
   id: number;
-  name: string;
-  series: string;
-  price: string;
+  title: string;
+  subtitle: string;
+  price: number;
   image: string;
 };
 
 const products: Product[] = [
   {
     id: 1,
-    name: "Sea Salt & Cracked Pepper",
-    series: "Original Series",
-    price: "$12.99",
+    title: "Sea Salt & Cracked Pepper",
+    subtitle: "Original Series",
+    price: 12.99,
     image: "/otherproducts1.svg",
   },
   {
     id: 2,
-    name: "Cheesy Jalapeño",
-    series: "Cheese Series",
-    price: "$13.99",
+    title: "Cheesy Jalapeño",
+    subtitle: "Cheese Series",
+    price: 13.99,
     image: "/otherproducts2.svg",
   },
   {
     id: 3,
-    name: "Himalayan Pink Salt",
-    series: "Pure Series",
-    price: "$11.99",
+    title: "Himalayan Pink Salt",
+    subtitle: "Pure Series",
+    price: 11.99,
     image: "/otherproducts3.svg",
   },
   {
     id: 4,
-    name: "Creamy Caramel",
-    series: "Sweet Series",
-    price: "$13.99",
+    title: "Creamy Caramel",
+    subtitle: "Sweet Series",
+    price: 13.99,
     image: "/otherproducts4.svg",
   },
   {
     id: 5,
-    name: "Creamy Caramele",
-    series: "Sweet Series",
-    price: "$13.99",
-    image: "/otherproducts1.svg",
+    title: "Creamy Caramel 1",
+    subtitle: "Sweet Series",
+    price: 13.99,
+    image: "/otherproducts4.svg",
+  },
+  {
+    id: 6,
+    title: "Creamy Caramel 2",
+    subtitle: "Sweet Series",
+    price: 13.99,
+    image: "/otherproducts4.svg",
   },
 ];
 
 export default function RelatedProducts() {
-  return (
-    <section className="mx-auto max-w-7xl px-4 py-20">
-      {/* Header */}
-      <div className="mb-8 flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">
-          You might also like
-        </h2>
+  const sliderRef = useRef<HTMLDivElement>(null);
 
-        <div className="flex gap-2">
-          <button className="flex h-10 w-10 items-center justify-center rounded-full border hover:bg-gray-100">
-            {/* <ChevronLeft /> */}
+  const scroll = (dir: "left" | "right") => {
+    if (!sliderRef.current) return;
+    const width = sliderRef.current.clientWidth;
+    sliderRef.current.scrollBy({
+      left: dir === "left" ? -width : width,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <section className="w-full py-16">
+      <div className="flex items-center justify-between mb-10">
+        <h2 className="text-3xl font-semibold">You might also like</h2>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => scroll("left")}
+            className="w-10 h-10 rounded-full border flex items-center justify-center hover:bg-gray-100 transition"
+          >
+            <Image src={ChevronLeft} alt={"ChevronLeft"} />
           </button>
-          <button className="flex h-10 w-10 items-center justify-center rounded-full border hover:bg-gray-100">
-            {/* <ChevronRight /> */}
+          <button
+            onClick={() => scroll("right")}
+            className="w-10 h-10 rounded-full border flex items-center justify-center hover:bg-gray-100 transition"
+          >
+            <Image src={ChevronRight} alt={"ChevronRight"} />
           </button>
         </div>
       </div>
 
-      {/* Products */}
-      <div className="flex gap-6 overflow-x-auto pb-4 lg:grid lg:grid-cols-4 lg:overflow-visible">
-        {products.map((product) => (
-          <div
-            key={product.id}
-            className="min-w-[260px] flex-shrink-0 lg:min-w-0"
-          >
-            {/* Image Card */}
-            <div className="relative aspect-[3/4] overflow-hidden rounded-3xl bg-gray-100">
+      <div
+        ref={sliderRef}
+        className="flex gap-8 overflow-x-auto pb-4 scroll-smooth no-scrollbar"
+      >
+        {products.map((item) => (
+          <div key={item.id} className="min-w-[280px]">
+            <div className="relative h-[420px] w-full rounded-3xl overflow-hidden">
               <Image
-                src={product.image}
-                alt={product.name}
+                src={item.image}
+                alt={item.title}
                 fill
-                className="object-cover transition duration-300 hover:scale-105"
+                className="object-cover"
               />
             </div>
 
-            {/* Info */}
-            <div className="mt-4">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-gray-900">{product.name}</h3>
-                <span className="font-semibold text-gray-900">
-                  {product.price}
-                </span>
+            <div className="flex justify-between items-start mt-5">
+              <div>
+                <h3 className="text-lg font-semibold">{item.title}</h3>
+                <p className="text-sm text-gray-500 mt-1">{item.subtitle}</p>
               </div>
-
-              <p className="mt-1 text-sm text-gray-500">{product.series}</p>
+              <p className="text-lg font-semibold">${item.price.toFixed(2)}</p>
             </div>
           </div>
         ))}

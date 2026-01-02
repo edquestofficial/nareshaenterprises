@@ -1,16 +1,18 @@
+import Image from "next/image";
+
 const features = [
   {
-    icon: "🌱",
+    icon: "/organic.svg",
     title: "100% Organic Sourced",
     desc: "Grown without synthetic pesticides or fertilizers, straight from nature’s lap.",
   },
   {
-    icon: "🥗",
+    icon: "/vegan.svg",
     title: "Gluten-Free & Vegan",
     desc: "Perfect for every diet. No wheat, no dairy, just plant-based power.",
   },
   {
-    icon: "✔️",
+    icon: "/verified.svg",
     title: "Non-GMO Verified",
     desc: "We keep it real. No genetically modified organisms in our supply chain.",
   },
@@ -35,7 +37,8 @@ export default function Features() {
               className="bg-white rounded-2xl p-10 shadow-sm hover:shadow-md transition"
             >
               <div className="w-16 h-16 mx-auto rounded-full bg-[#fff4e6] flex items-center justify-center">
-                <item.icon className="text-[#4b2c1a]" size={28} />
+                {/* <item.icon className="text-[#4b2c1a]" size={28} /> */}
+                <img className="w-full h-full" src={item.icon} alt="Feature" />
               </div>
 
               <h3 className="mt-6 text-xl font-semibold text-gray-900">
