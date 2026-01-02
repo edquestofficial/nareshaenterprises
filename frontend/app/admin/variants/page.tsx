@@ -241,8 +241,8 @@ function VariantsContent() {
               onChange={(e) => setForm({ ...form, tag: e.target.value })}
             >
               <option value="">Tag(optional)</option>
-              <option value="bestseller">BestSeller</option>
-              <option value="featured">Featured</option>
+              <option value="Bestseller">BestSeller</option>
+              <option value="Featured">Featured</option>
             </select>
             <input
               placeholder="Size (e.g. 250g)"
@@ -358,7 +358,7 @@ function VariantsContent() {
           </div>
         </div>
         {/* ================= LEFT : VARIANTS LIST ================= */}
-        <div className="w-1/3 border rounded-xl p-6 overflow-y-auto">
+        <div className="w-1/3 border rounded-xl p-6 overflow-y-auto bg-gray-50">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold">
               {productIdFilter ? "Product Variants" : "All Variants"}
