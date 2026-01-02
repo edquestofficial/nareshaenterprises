@@ -285,6 +285,14 @@ function VariantsContent() {
                 setForm({ ...form, serving_size: e.target.value })
               }
             />
+            <input
+              placeholder="Servings Per Container"
+              className="border rounded p-2 w-full mb-3"
+              value={form.servingsPerContainer}
+              onChange={(e) =>
+                setForm({ ...form, servingsPerContainer: e.target.value })
+              }
+            />
 
             <input
               placeholder="Calories"

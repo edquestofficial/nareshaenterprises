@@ -50,25 +50,6 @@ export default function Products({
   const [itemss, setItems] = useState<ProductItem[]>([]);
   const [qty, setQty] = useState<number[]>([]);
 
-  useEffect(() => {
-    const fetchVariantById = async () => {
-      try {
-        const res = await fetch("/api/admin/variants/2");
-
-        if (!res.ok) {
-          throw new Error("Failed to fetch variant");
-        }
-
-        const data = await res.json();
-        console.log("Variant by ID:", data);
-      } catch (error) {
-        console.error("Error fetching variant:", error);
-      }
-    };
-
-    fetchVariantById();
-  }, []);
-
   // Fetch data from API
   useEffect(() => {
     fetch(`/api/admin/variants?productName=${category}`)
@@ -102,9 +83,9 @@ export default function Products({
         setQty(formatted.map(() => 1));
       });
   }, [category]);
-  console.log("itemss", itemss);
+  // console.log("itemss", itemss);
 
-  const changeQty = (i, val) => {
+  const changeQty = (i: number, val: number) => {
     setQty((q) => q.map((x, idx) => (idx === i ? Math.max(1, x + val) : x)));
   };
 
@@ -126,7 +107,7 @@ export default function Products({
           <div
             key={i}
             onClick={() => router.push(`/product/${p.id}`)}
-            className="bg-white rounded-xl border shadow-sm overflow-hidden br"
+            className="bg-white rounded-xl border shadow-sm overflow-hidden "
           >
             <div className="relative">
               <img src={p.img} className="h-56 w-full object-cover" />

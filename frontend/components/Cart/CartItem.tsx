@@ -4,7 +4,7 @@ import { useCart } from "@/context/CartContext";
 // import { Trash2 } from "lucide-react";
 
 export interface CartItemProps {
-  id: string | number;
+  id: string;
   name: string;
   description?: string;
   image: string;

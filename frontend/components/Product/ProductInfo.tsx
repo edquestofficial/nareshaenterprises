@@ -80,7 +80,9 @@ export default function ProductInfo({
 
               <div className="flex justify-between">
                 <span className="text-gray-600">Servings Per Container</span>
-                <span className="font-medium text-gray-900">About 3</span>
+                <span className="font-medium text-gray-900">
+                  {servingsPerContainer}
+                </span>
               </div>
             </div>
 
