@@ -10,8 +10,15 @@ import Footer from "@/components/Footer/page";
 import Tradition from "@/components/Tradition/page";
 import Features from "@/components/Features/page";
 
+type productType = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+};
 export default function Home() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<productType[]>([]);
 
   useEffect(() => {
     fetch("/api/admin/products")

@@ -5,36 +5,6 @@ import OrderSummary from "./OrderSummary";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 
-// const items = [
-//   {
-//     id: 1,
-//     name: "Roasted Fox Nuts – Peri Peri",
-//     description: "Spicy & Tangy Flavor",
-//     image: "/cart1.svg",
-//     weight: "250g",
-//     quantity: 1,
-//     price: 250,
-//   },
-//   {
-//     id: 2,
-//     name: "Raw Makhana Premium",
-//     description: "100% Organic & Natural",
-//     image: "/cart2.svg",
-//     weight: "500g",
-//     quantity: 2,
-//     price: 900,
-//   },
-//   {
-//     id: 3,
-//     name: "Caramel Fox Nuts",
-//     description: "Sweet & Crunchy",
-//     image: "/cart3.svg",
-//     weight: "100g",
-//     quantity: 1,
-//     price: 150,
-//   },
-// ];
-
 export default function ShoppingCart() {
   const { cart } = useCart();
 
@@ -65,7 +35,7 @@ export default function ShoppingCart() {
           </Link>
         </div>
 
-        <OrderSummary cart={cart} />
+        <OrderSummary />
       </div>
     </div>
   );
