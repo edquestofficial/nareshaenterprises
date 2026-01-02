@@ -4,6 +4,7 @@ import "./globals.css";
 import { Be_Vietnam_Pro } from "next/font/google";
 import Navbar from "@/components/Navbar/page";
 import Footer from "@/components/Footer/page";
+import { CartProvider } from "@/context/CartContext";
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin"],
@@ -26,9 +27,11 @@ export default function RootLayout({
       <body
         className={`${beVietnamPro.variable} font-sans antialiased bg-[#fafafa] text-gray-900`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <CartProvider>
+          <Navbar />
+          {children}
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

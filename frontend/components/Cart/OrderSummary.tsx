@@ -1,4 +1,15 @@
+"use client";
+import { useCart } from "@/context/CartContext";
+
 export default function OrderSummary() {
+  const { cart } = useCart();
+  const subtotal = cart.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
+  const tax = subtotal * 0.05;
+  const shipping = 0;
+  const total = subtotal + tax + shipping;
   return (
     <div className="rounded-xl bg-white p-6 shadow-sm">
       <h2 className="mb-4 text-lg font-semibold">Order Summary</h2>
@@ -6,7 +17,7 @@ export default function OrderSummary() {
       <div className="space-y-3 text-sm text-gray-600">
         <div className="flex justify-between">
           <span>Subtotal</span>
-          <span>₹1,300</span>
+          <span> {subtotal.toFixed(2)}</span>
         </div>
 
         <div className="flex justify-between">
@@ -16,7 +27,7 @@ export default function OrderSummary() {
 
         <div className="flex justify-between">
           <span>Tax (5% GST)</span>
-          <span>₹65</span>
+          <span>{tax.toFixed(2)}</span>
         </div>
       </div>
 
@@ -37,7 +48,9 @@ export default function OrderSummary() {
 
       <div className="flex items-center justify-between border-t pt-4">
         <span className="font-semibold">Total Amount</span>
-        <span className="text-2xl font-bold text-brown-700">₹1,365</span>
+        <span className="text-2xl font-bold text-brown-700">
+          {total.toFixed(2)}
+        </span>
       </div>
 
       <button className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg bg-[#4a2612] py-3 font-semibold text-white hover:bg-brown-900">

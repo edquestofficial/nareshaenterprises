@@ -1,6 +1,32 @@
 // import { FileText, FlaskConical } from "lucide-react";
 
-export default function ProductInfo() {
+export default function ProductInfo({
+  ingredients,
+  description3,
+  nutrition,
+  saturatedFat,
+  servingSize,
+  servingsPerContainer,
+  totalCarbohydrate,
+  totalFat,
+  protein,
+  sodium,
+  dietaryFiber,
+  calories,
+}: {
+  ingredients: string;
+  description3: string;
+  nutrition: string;
+  saturatedFat: string;
+  servingSize: string;
+  servingsPerContainer: string;
+  totalCarbohydrate: string;
+  totalFat: string;
+  protein: string;
+  sodium: string;
+  dietaryFiber: string;
+  calories: string;
+}) {
   return (
     <section className="mx-auto max-w-7xl px-4 py-16">
       <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
@@ -16,25 +42,7 @@ export default function ProductInfo() {
             </div>
 
             <div className="space-y-5 text-gray-700 leading-relaxed">
-              <p>
-                Discover the ancient superfood of India, reimagined for the
-                modern snacker. Our Fox Nuts (also known as Makhana or Lotus
-                Seeds) are harvested from the stagnant water of wetlands in
-                Eastern India.
-              </p>
-
-              <p>
-                Unlike traditional chips that are fried in unhealthy oils, our
-                Fox Nuts are air-roasted to preserve their natural nutrients and
-                incredible crunch. We then toss them in our signature Peri Peri
-                seasoning blend—a mix of chili, garlic, onion, and herbs that
-                delivers a tangy, spicy kick without overwhelming the palate.
-              </p>
-
-              <p>
-                Perfect for pre-workout energy, office snacking, or movie
-                nights. It’s time to snack smarter.
-              </p>
+              <p>{description3}</p>
             </div>
           </div>
 
@@ -47,12 +55,7 @@ export default function ProductInfo() {
               </h2>
             </div>
 
-            <p className="text-gray-700 leading-relaxed">
-              Fox Nuts (Makhana) (78%), Olive Oil, Peri Peri Seasoning (12%)
-              [Red Chili, Garlic Powder, Onion Powder, Dried Oregano, Lemon
-              Juice Powder, Black Salt, Tamarind Powder], Natural Antioxidant
-              (Rosemary Extract).
-            </p>
+            <p className="text-gray-700 leading-relaxed">{ingredients}</p>
 
             <p className="mt-3 text-sm italic text-gray-500">
               May contain traces of peanuts and tree nuts due to shared
@@ -86,37 +89,39 @@ export default function ProductInfo() {
               <span className="text-lg font-semibold text-gray-900">
                 Calories
               </span>
-              <span className="text-2xl font-bold text-[#5a3a28]">140</span>
+              <span className="text-2xl font-bold text-[#5a3a28]">
+                {calories}
+              </span>
             </div>
 
             {/* Nutrients */}
             <div className="space-y-4 py-6 text-sm">
               <div className="flex justify-between">
                 <span className="font-medium">Total Fat</span>
-                <span className="font-medium">5g</span>
+                <span className="font-medium">{totalFat}</span>
               </div>
               <div className="flex justify-between pl-4 text-gray-600">
                 <span>Saturated Fat</span>
-                <span>1g</span>
+                <span>{saturatedFat}</span>
               </div>
 
               <div className="flex justify-between">
                 <span className="font-medium">Sodium</span>
-                <span className="font-medium">180mg</span>
+                <span className="font-medium">{sodium}</span>
               </div>
 
               <div className="flex justify-between">
                 <span className="font-medium">Total Carbohydrate</span>
-                <span className="font-medium">20g</span>
+                <span className="font-medium">{totalCarbohydrate}</span>
               </div>
               <div className="flex justify-between pl-4 text-gray-600">
                 <span>Dietary Fiber</span>
-                <span>3g</span>
+                <span>{dietaryFiber}</span>
               </div>
 
               <div className="flex justify-between text-base font-semibold">
                 <span>Protein</span>
-                <span className="text-[#5a3a28]">5g</span>
+                <span className="text-[#5a3a28]">{protein}</span>
               </div>
             </div>
           </div>

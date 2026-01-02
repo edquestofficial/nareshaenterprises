@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useCart } from "@/context/CartContext";
 // import { ShoppingCart } from "lucide-react";
 
 const images = [
@@ -17,10 +18,42 @@ const sizes = [
   { id: "500g", label: "Family Pack (500g)" },
 ];
 
-export default function ProductDetails() {
-  const [selectedImage, setSelectedImage] = useState(images[0]);
+export default function ProductDetails({
+  images = [],
+  id,
+  tag,
+  name,
+  image,
+  size,
+  price,
+  discount,
+  description,
+  description2,
+}: {
+  images: string[];
+  id: number;
+  tag: string;
+  name: string;
+  image: string;
+  size: string;
+  price: number;
+  discount: number;
+  description: string;
+  description2: string;
+}) {
+  const [selectedImage, setSelectedImage] = useState(
+    images[0] || "/product1.svg"
+  ); // Fallback image
   const [selectedSize, setSelectedSize] = useState(sizes[0].id);
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
+
+  // Update selectedImage when images prop changes (e.g. after API fetch)
+  useEffect(() => {
+    if (images && images.length > 0) {
+      setSelectedImage(images[0]);
+    }
+  }, [images]);
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-10">
@@ -28,9 +61,7 @@ export default function ProductDetails() {
       <p className="mb-6 text-sm text-gray-500">
         Home <span className="mx-1">›</span> Product{" "}
         <span className="mx-1">›</span>{" "}
-        <span className="text-gray-800 font-medium">
-          Roasted Fox Nuts – Peri Peri
-        </span>
+        <span className="text-gray-800 font-medium">{name} – Peri Peri</span>
       </p>
 
       <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
@@ -38,7 +69,7 @@ export default function ProductDetails() {
         <div>
           <div className="relative overflow-hidden rounded-2xl">
             <span className="absolute left-4 top-4 z-10 rounded-full bg-amber-900 px-4 py-1 text-xs font-semibold text-white">
-              BEST SELLER
+              {tag}
             </span>
 
             <Image
@@ -81,22 +112,22 @@ export default function ProductDetails() {
           </p>
 
           <h1 className="mt-2 text-3xl font-bold text-gray-900">
-            Premium Roasted Fox Nuts
-            <br />– Peri Peri Flavor
+            {name}
+            <br />– {description}
           </h1>
 
           {/* Price */}
           <div className="mt-4 flex items-center gap-4">
-            <span className="text-3xl font-bold text-gray-900">₹299</span>
+            <span className="text-3xl font-bold text-gray-900"> {price}</span>
             <span className="text-lg text-gray-400 line-through">₹599</span>
-            <span className="text-sm font-semibold text-red-500">-18%</span>
+            <span className="text-sm font-semibold text-red-500">
+              {discount}%
+            </span>
           </div>
 
           {/* Description */}
           <p className="mt-6 max-w-xl text-gray-600 leading-relaxed">
-            Experience the ultimate guilt-free crunch. Our hand-picked Makhana
-            (Fox Nuts) are slow-roasted to perfection and dusted with a fiery
-            blend of Peri Peri spices. Low in calories, and packed with flavor.
+            {description2}
           </p>
 
           {/* Size */}
@@ -139,8 +170,22 @@ export default function ProductDetails() {
             </div>
 
             {/* Add to Cart */}
-            <button className="flex items-center gap-3 rounded-xl bg-amber-900 px-8 py-4 text-white font-semibold transition hover:bg-amber-800">
-              {/* <ShoppingCart size={20} /> */}
+            <button
+              onClick={() => {
+                const cartItem = {
+                  id: id.toString(),
+                  name,
+                  image: selectedImage,
+                  size: selectedSize,
+                  price,
+                  quantity,
+                };
+
+                console.log("🟢 Adding to cart:", cartItem);
+                addToCart(cartItem);
+              }}
+              className="flex items-center gap-3 rounded-xl bg-amber-900 px-8 py-4 text-white font-semibold transition hover:bg-amber-800 cursor-pointer"
+            >
               Add to Cart
             </button>
           </div>
