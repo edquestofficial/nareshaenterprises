@@ -40,8 +40,8 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-[#4a2612]">
-          <Link href="products">Products</Link>
-          <a href="#">About</a>
+          <Link href="/products">Products</Link>
+          <a href="/about">About</a>
           <a href="#">Contact</a>
           <button className="bg-[#4a2612] text-white px-5 py-2 rounded-md">
             View Cart
